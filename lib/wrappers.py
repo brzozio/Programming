@@ -6,7 +6,7 @@ from functools import wraps
 def debugIO(func: Callable) -> Callable:
     
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def sync_wrapper(*args, **kwargs):
         
         result = func(*args, **kwargs)
 
@@ -19,7 +19,25 @@ def debugIO(func: Callable) -> Callable:
         
         return result
     
-    return wrapper
+    @wraps(func)
+    async def async_wrapper(*args, **kwargs):
+        
+        result = await func(*args, **kwargs)
+
+        print(
+            f"[{func.__name__}] : function took and returned these arguments:\n"
+            f" - Arguments: {args},\n"
+            f" - Key-arguments: {kwargs},\n"
+            f" - Output: {result}"
+        )
+        
+        return result
+    
+    if asyncio.iscoroutinefunction(func):
+        return async_wrapper
+    else:
+        return sync_wrapper
+
 
 def func_timing(func: Callable) -> Callable:
 
