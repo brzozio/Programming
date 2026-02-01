@@ -6,30 +6,35 @@ def debugIO(func: Callable) -> Callable:
     @wraps(func)
     def wrapper(*args, **kwargs):
         
-        print(f'== DEBUG FOR {func.__name__} == \
-              \n - Arguments: {args},\
-              \n - Key-arguments: {kwargs}')
-        
         result = func(*args, **kwargs)
-        
-        print(f'Output is: {result}')
+
+        print(
+            f"[{func.__name__}] : function took and returned these arguments:\n"
+            f" - Arguments: {args},\n"
+            f" - Key-arguments: {kwargs},\n"
+            f" - Output: {result}"
+        )
         
         return result
     
     return wrapper
 
+def func_timing(func: Callable) -> Callable:
 
-@debugIO
-def test(num: int, word: str) -> list[str]:
-    for _ in range(num):
-        print(f"{word:_>20}")
+    @wraps(func)
+    def wrapper(*args, **kwargs):
 
-    return "Finished"
+        import time
 
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        end = time.perf_counter()
 
-def main() -> None:
-    test(num=4, word='testing')
+        print(f"[{func.__name__}] : function execution time was: {end - start:.6f} seconds")
+        
+        return result
+    
+    return wrapper
 
-
-if __name__ == "__main__":
-    main()
+# python -m venv .venv
+# source .venv/Scripts/activate
