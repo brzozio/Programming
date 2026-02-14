@@ -5,7 +5,7 @@ services:
     container_name: gradio-api
     build: 
       context: ./api
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-api
     ports:
       - "7860:7860"
     depends_on:
@@ -17,7 +17,7 @@ services:
     container_name: celery-worker
     build: 
       context: ./worker
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-worker
     depends_on:
       - redis
     networks:
