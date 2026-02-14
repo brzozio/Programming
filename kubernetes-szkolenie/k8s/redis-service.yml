@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  selector:
+    app: redis
+  ports:
+    - protocol: TCP
+      port: 6379        # port wewnątrz klastra
+      targetPort: 6379  # port kontenera

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: docker-compose-template-api:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 7860
+          # resources:
+          #   limits:
+          #     memory: "256Mi"
+          #     cpu: "500m"
+          #   requests:
+          #     memory: "128Mi"
+          #     cpu: "250m"
